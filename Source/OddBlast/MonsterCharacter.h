@@ -26,11 +26,15 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void ApplySlow(float SlowValue, float Duration);
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
-	void ApplyBoop(float BoopValue, float Duration);
+	void ApplySlow(float Value, float Duration);
+
+	void ApplyBoop(float Value, float Duration);
 
 	void ResetWalkSpeed();
+
+	bool IsDead() const;
 
 private:
 	UPROPERTY(EditAnywhere)

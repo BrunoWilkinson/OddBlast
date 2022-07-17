@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "OddBlastProjectile.h"
+#include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "MonsterCharacter.h"
@@ -41,7 +42,18 @@ void AOddBlastProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 		{
 			if (DamageProjectile)
 			{
-				// apply damage
+				AController* OwnerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+				if (OwnerController != nullptr)
+				{
+					FVector ShotDirection;
+					FVector PlayerViewPointLocation;
+					FRotator PlayerViewPointRotation;
+					OwnerController->GetPlayerViewPoint(PlayerViewPointLocation, PlayerViewPointRotation);
+					ShotDirection = -PlayerViewPointRotation.Vector();
+
+					FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
+					MonsterCharacter->TakeDamage(Damage, DamageEvent, OwnerController, this);
+				}
 			}
 
 			if (SlowProjectile)

@@ -3,6 +3,7 @@
 
 #include "MonsterCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AMonsterCharacter::AMonsterCharacter()
@@ -39,19 +40,33 @@ void AMonsterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 }
 
-void AMonsterCharacter::ApplySlow(float SlowValue, float Duration)
+float AMonsterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageToApply = FMath::Min(Health, DamageToApply);
+	Health -= DamageToApply;
+
+	if (IsDead())
+	{
+		Destroy();
+	}
+
+	return DamageToApply;
+}
+
+void AMonsterCharacter::ApplySlow(float Value, float Duration)
 {
 	FTimerHandle SlowDelayHandle;
 	if (MovementComponent != nullptr && MovementComponent->MaxWalkSpeed > 100)
 	{
-		MovementComponent->MaxWalkSpeed -= SlowValue;
+		MovementComponent->MaxWalkSpeed -= Value;
 		GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
 	}
 }
 
-void AMonsterCharacter::ApplyBoop(float BoopValue, float Duration)
+void AMonsterCharacter::ApplyBoop(float Value, float Duration)
 {
-	MovementComponent->JumpZVelocity = BoopValue;
+	MovementComponent->JumpZVelocity = Value;
 	Jump();
 	MovementComponent->MaxWalkSpeed = 0;
 	FTimerHandle SlowDelayHandle;
@@ -64,5 +79,14 @@ void AMonsterCharacter::ResetWalkSpeed()
 	{
 		MovementComponent->MaxWalkSpeed = DefaultWalkSpeed;
 	}
+}
+
+bool AMonsterCharacter::IsDead() const
+{
+	if (Health <= 0)
+	{
+		return true;
+	}
+	return false;
 }
 
