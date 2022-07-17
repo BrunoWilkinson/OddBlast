@@ -36,24 +36,23 @@ void AOddBlastProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 {
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
-		if (DamageProjectile)
+		AMonsterCharacter* MonsterCharacter = Cast<AMonsterCharacter>(OtherActor);
+		if (MonsterCharacter != nullptr)
 		{
-			// apply damage
-		}
+			if (DamageProjectile)
+			{
+				// apply damage
+			}
 
-		if (SlowProjectile)
-		{
-			// apply slow
-			AMonsterCharacter* MonsterCharacter = Cast<AMonsterCharacter>(OtherActor);
-			if (MonsterCharacter != nullptr)
+			if (SlowProjectile)
 			{
 				MonsterCharacter->ApplySlow(SlowSpeed, SlowDuration);
 			}
-		}
 
-		if (BoopProjectile)
-		{
-			// apply boop
+			if (BoopProjectile)
+			{
+				MonsterCharacter->ApplyBoop(BoopDistance, BoopDuration);
+			}
 		}
 
 		Destroy();

@@ -58,5 +58,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float BoopDistance = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	float BoopDuration = 2.f;
 };
 

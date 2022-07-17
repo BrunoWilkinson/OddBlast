@@ -21,7 +21,7 @@ void AMonsterCharacter::BeginPlay()
 	MovementComponent = this->GetCharacterMovement();
 	if (MovementComponent != nullptr)
 	{
-		DefaultWalkSpeed = this->GetCharacterMovement()->MaxWalkSpeed;
+		DefaultWalkSpeed = MovementComponent->MaxWalkSpeed;
 	}
 }
 
@@ -47,6 +47,15 @@ void AMonsterCharacter::ApplySlow(float SlowValue, float Duration)
 		MovementComponent->MaxWalkSpeed -= SlowValue;
 		GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
 	}
+}
+
+void AMonsterCharacter::ApplyBoop(float BoopValue, float Duration)
+{
+	MovementComponent->JumpZVelocity = BoopValue;
+	Jump();
+	MovementComponent->MaxWalkSpeed = 0;
+	FTimerHandle SlowDelayHandle;
+	GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
 }
 
 void AMonsterCharacter::ResetWalkSpeed()

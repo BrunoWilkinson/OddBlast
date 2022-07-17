@@ -28,6 +28,8 @@ public:
 
 	void ApplySlow(float SlowValue, float Duration);
 
+	void ApplyBoop(float BoopValue, float Duration);
+
 	void ResetWalkSpeed();
 
 private:
