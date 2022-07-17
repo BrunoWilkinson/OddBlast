@@ -44,6 +44,12 @@ public:
 	/** Delegate to whom anyone can subscribe to receive this event */
 	UPROPERTY(BlueprintAssignable, Category = "Interaction")
 	FOnUseItem OnUseItem;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const;
+
 protected:
 	
 	/** Fires a projectile. */
@@ -99,5 +105,11 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+private:
+	UPROPERTY(EditAnywhere)
+	float MaxHealth = 100.f;
+
+	UPROPERTY(VisibleAnywhere)
+	float Health;
 };
 

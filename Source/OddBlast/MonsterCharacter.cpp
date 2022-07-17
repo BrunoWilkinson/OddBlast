@@ -3,7 +3,9 @@
 
 #include "MonsterCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DrawDebugHelpers.h"
 #include "Components/CapsuleComponent.h"
+#include "OddBlastCharacter.h"
 
 // Sets default values
 AMonsterCharacter::AMonsterCharacter()
@@ -56,9 +58,35 @@ float AMonsterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 
 void AMonsterCharacter::Attack()
 {
-	IsAttacking = true;
-	FTimerHandle ResetAttackDelayHandle;
-	GetWorld()->GetTimerManager().SetTimer(ResetAttackDelayHandle, this, &AMonsterCharacter::ResetCanAttack, 2.0f, false);
+	FHitResult HitResult;
+	FVector Start = GetActorLocation();
+	FVector End = Start + GetActorForwardVector() * MeleeRange;
+	DrawDebugSphere(GetWorld(), End, 50, 50, FColor::Red, false, 5);
+
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(MeleeRadius);
+
+	bool HasHit = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		Start,
+		End,
+		FQuat::Identity,
+		ECC_GameTraceChannel2,
+		Sphere
+	);
+
+	if (HasHit && HitResult.GetActor() != nullptr)
+	{
+		AOddBlastCharacter* PlayerCharacter = Cast<AOddBlastCharacter>(HitResult.GetActor());
+		if (PlayerCharacter != nullptr)
+		{
+			FPointDamageEvent DamageEvent(Damage, HitResult, GetActorForwardVector(), nullptr);
+			PlayerCharacter->TakeDamage(Damage, DamageEvent, GetController(), this);
+
+			IsAttacking = true;
+			FTimerHandle ResetAttackDelayHandle;
+			GetWorld()->GetTimerManager().SetTimer(ResetAttackDelayHandle, this, &AMonsterCharacter::ResetCanAttack, 2.0f, false);
+		}
+	}
 }
 
 void AMonsterCharacter::ResetCanAttack()

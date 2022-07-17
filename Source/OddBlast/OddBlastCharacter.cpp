@@ -35,6 +35,7 @@ AOddBlastCharacter::AOddBlastCharacter()
 	Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
 
+	Health = MaxHealth;
 }
 
 void AOddBlastCharacter::BeginPlay()
@@ -72,6 +73,30 @@ void AOddBlastCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAxis("Look Up / Down Mouse", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Turn Right / Left Gamepad", this, &AOddBlastCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("Look Up / Down Gamepad", this, &AOddBlastCharacter::LookUpAtRate);
+}
+
+float AOddBlastCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageToApply = FMath::Min(Health, DamageToApply);
+	Health -= DamageToApply;
+
+	if (IsDead())
+	{
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	return DamageToApply;
+}
+
+bool AOddBlastCharacter::IsDead() const
+{
+	if (Health <= 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 void AOddBlastCharacter::OnPrimaryAction()
