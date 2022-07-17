@@ -28,13 +28,21 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	void Attack();
+
+	void ResetCanAttack();
+
 	void ApplySlow(float Value, float Duration);
 
 	void ApplyBoop(float Value, float Duration);
 
 	void ResetWalkSpeed();
 
+	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
+
+	UFUNCTION(BlueprintPure)
+	bool CanAttack() const;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -43,7 +51,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	float Health;
 
+	UPROPERTY(EditAnywhere)
+	float Damage = 20.f;
+
 	float DefaultWalkSpeed = 300.f;
+
+	bool IsAttacking;
 
 	class UCharacterMovementComponent* MovementComponent;
 };

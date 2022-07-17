@@ -54,6 +54,18 @@ float AMonsterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	return DamageToApply;
 }
 
+void AMonsterCharacter::Attack()
+{
+	IsAttacking = true;
+	FTimerHandle ResetAttackDelayHandle;
+	GetWorld()->GetTimerManager().SetTimer(ResetAttackDelayHandle, this, &AMonsterCharacter::ResetCanAttack, 2.0f, false);
+}
+
+void AMonsterCharacter::ResetCanAttack()
+{
+	IsAttacking = false;
+}
+
 void AMonsterCharacter::ApplySlow(float Value, float Duration)
 {
 	FTimerHandle SlowDelayHandle;
@@ -88,5 +100,10 @@ bool AMonsterCharacter::IsDead() const
 		return true;
 	}
 	return false;
+}
+
+bool AMonsterCharacter::CanAttack() const
+{
+	return IsAttacking;
 }
 
