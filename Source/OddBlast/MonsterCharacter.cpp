@@ -69,8 +69,8 @@ void AMonsterCharacter::ApplyBoop(float Value, float Duration)
 	MovementComponent->JumpZVelocity = Value;
 	Jump();
 	MovementComponent->MaxWalkSpeed = 0;
-	FTimerHandle SlowDelayHandle;
-	GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
+	FTimerHandle BoopDelayHandle;
+	GetWorld()->GetTimerManager().SetTimer(BoopDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
 }
 
 void AMonsterCharacter::ResetWalkSpeed()

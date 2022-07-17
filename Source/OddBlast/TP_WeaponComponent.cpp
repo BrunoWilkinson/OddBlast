@@ -24,8 +24,9 @@ void UTP_WeaponComponent::Fire()
 	}
 
 	// Try and fire a projectile
-	if (ListProjectileClass.Num() > 0)
+	if (ListProjectileClass.Num() > 0 && CanFire)
 	{
+		CanFire = false;
 		UWorld* const World = GetWorld();
 		if (World != nullptr)
 		{
@@ -43,6 +44,8 @@ void UTP_WeaponComponent::Fire()
 			if (ListProjectileClass[RandIndex] != nullptr)
 			{
 				World->SpawnActor<AOddBlastProjectile>(ListProjectileClass[RandIndex], SpawnLocation, SpawnRotation, ActorSpawnParams);
+				FTimerHandle FireDelayHandle;
+				GetWorld()->GetTimerManager().SetTimer(FireDelayHandle, this, &UTP_WeaponComponent::ResetCanFire, FireRate, false);
 			}
 		}
 	}
@@ -72,6 +75,11 @@ void UTP_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		// Unregister from the OnUseItem Event
 		Character->OnUseItem.RemoveDynamic(this, &UTP_WeaponComponent::Fire);
 	}
+}
+
+void UTP_WeaponComponent::ResetCanFire()
+{
+	CanFire = true;
 }
 
 void UTP_WeaponComponent::AttachWeapon(AOddBlastCharacter* TargetCharacter)

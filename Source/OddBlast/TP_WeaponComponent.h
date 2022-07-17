@@ -37,8 +37,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void AttachWeapon(AOddBlastCharacter* TargetCharacter);
 
-	/** Make the weapon Fire a Projectile */
-	UFUNCTION(BlueprintCallable, Category="Weapon")
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
 
 protected:
@@ -50,4 +49,11 @@ protected:
 private:
 	/** The Character holding this weapon*/
 	AOddBlastCharacter* Character;
+
+	UPROPERTY(EditAnywhere)
+	float FireRate = 0.5f;
+
+	bool CanFire = true;
+
+	void ResetCanFire();
 };
