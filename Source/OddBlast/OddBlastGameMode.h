@@ -13,6 +13,9 @@ class AOddBlastGameMode : public AGameModeBase
 
 public:
 	AOddBlastGameMode();
+
+public:
+	void EndGame(bool bIsPlayerWinner);
 };
 
 

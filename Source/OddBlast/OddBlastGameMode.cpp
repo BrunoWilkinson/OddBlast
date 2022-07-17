@@ -12,3 +12,6 @@ AOddBlastGameMode::AOddBlastGameMode()
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
 }
+
+void AOddBlastGameMode::EndGame(bool bIsPlayerWinner)
+{}

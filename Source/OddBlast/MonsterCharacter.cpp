@@ -3,7 +3,6 @@
 
 #include "MonsterCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "DrawDebugHelpers.h"
 #include "Components/CapsuleComponent.h"
 #include "OddBlastCharacter.h"
 
@@ -61,7 +60,6 @@ void AMonsterCharacter::Attack()
 	FHitResult HitResult;
 	FVector Start = GetActorLocation();
 	FVector End = Start + GetActorForwardVector() * MeleeRange;
-	DrawDebugSphere(GetWorld(), End, 50, 50, FColor::Red, false, 5);
 
 	FCollisionShape Sphere = FCollisionShape::MakeSphere(MeleeRadius);
 

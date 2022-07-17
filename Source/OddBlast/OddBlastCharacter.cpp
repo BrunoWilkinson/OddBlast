@@ -5,6 +5,7 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
 
@@ -83,6 +84,8 @@ float AOddBlastCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 
 	if (IsDead())
 	{
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		PlayerController->RestartLevel();
 		DetachFromControllerPendingDestroy();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
