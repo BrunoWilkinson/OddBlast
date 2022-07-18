@@ -95,7 +95,7 @@ void AMonsterCharacter::ResetCanAttack()
 void AMonsterCharacter::ApplySlow(float Value, float Duration)
 {
 	FTimerHandle SlowDelayHandle;
-	if (MovementComponent != nullptr && MovementComponent->MaxWalkSpeed > 100)
+	if (MovementComponent != nullptr && MovementComponent->MaxWalkSpeed > 0)
 	{
 		MovementComponent->MaxWalkSpeed -= Value;
 		GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
