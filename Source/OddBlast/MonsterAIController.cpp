@@ -4,7 +4,7 @@
 #include "MonsterAIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "MonsterCharacter.h"
+#include "MonsterPawn.h"
 
 void AMonsterAIController::BeginPlay()
 {
@@ -32,10 +32,10 @@ void AMonsterAIController::Tick(float DeltaTime)
 
 bool AMonsterAIController::IsDead() const
 {
-	AMonsterCharacter* MonsterCharacter = Cast<AMonsterCharacter>(GetPawn());
-	if (MonsterCharacter != nullptr)
+	AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(GetPawn());
+	if (MonsterPawn != nullptr)
 	{
-		return MonsterCharacter->IsDead();
+		return MonsterPawn->IsDead();
 	}
 	return true;
 }

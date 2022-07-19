@@ -4,7 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
-#include "MonsterCharacter.h"
+#include "MonsterPawn.h"
 
 AOddBlastProjectile::AOddBlastProjectile() 
 {
@@ -37,8 +37,8 @@ void AOddBlastProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 {
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
-		AMonsterCharacter* MonsterCharacter = Cast<AMonsterCharacter>(OtherActor);
-		if (MonsterCharacter != nullptr)
+		AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(OtherActor);
+		if (MonsterPawn != nullptr)
 		{
 			if (DamageProjectile)
 			{
@@ -52,18 +52,18 @@ void AOddBlastProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 					ShotDirection = -PlayerViewPointRotation.Vector();
 
 					FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
-					MonsterCharacter->TakeDamage(Damage, DamageEvent, OwnerController, this);
+					MonsterPawn->TakeDamage(Damage, DamageEvent, OwnerController, this);
 				}
 			}
 
 			if (SlowProjectile)
 			{
-				MonsterCharacter->ApplySlow(SlowSpeed, SlowDuration);
+				MonsterPawn->ApplySlow(SlowSpeed, SlowDuration);
 			}
 
 			if (BoopProjectile)
 			{
-				MonsterCharacter->ApplyBoop(BoopDistance, BoopDuration);
+				MonsterPawn->ApplyBoop(BoopDistance, BoopDuration);
 			}
 		}
 
