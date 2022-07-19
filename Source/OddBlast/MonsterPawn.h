@@ -6,21 +6,20 @@
 #include "GameFramework/Pawn.h"
 #include "MonsterPawn.generated.h"
 
+class UHealthComponent;
+
 UCLASS()
 class ODDBLAST_API AMonsterPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	AMonsterPawn();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void Attack();
@@ -33,8 +32,7 @@ public:
 
 	void ResetWalkSpeed();
 
-	UFUNCTION(BlueprintPure)
-	bool IsDead() const;
+	UHealthComponent* GetHealthComponent();
 
 	UFUNCTION(BlueprintPure)
 	bool CanAttack() const;
@@ -53,13 +51,7 @@ private:
 	class UArrowComponent* ArrowComponent;
 	
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	class UHealthComponent* HealthComponent;
-
-	UPROPERTY(EditAnywhere)
-	float MaxHealth = 100.f;
-
-	UPROPERTY(VisibleAnywhere)
-	float Health;
+	UHealthComponent* HealthComponent;
 
 	UPROPERTY(EditAnywhere)
 	float Damage = 20.f;

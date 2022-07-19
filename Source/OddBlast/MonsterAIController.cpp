@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "MonsterPawn.h"
+#include "HealthComponent.h"
 
 void AMonsterAIController::BeginPlay()
 {
@@ -35,7 +36,11 @@ bool AMonsterAIController::IsDead() const
 	AMonsterPawn* MonsterCharacter = Cast<AMonsterPawn>(GetPawn());
 	if (MonsterCharacter != nullptr)
 	{
-		return MonsterCharacter->IsDead();
+		UHealthComponent* MonsterHealth = MonsterCharacter->GetHealthComponent();
+		if (MonsterHealth != nullptr)
+		{
+			return MonsterHealth->IsDead();
+		}
 	}
 	return true;
 }

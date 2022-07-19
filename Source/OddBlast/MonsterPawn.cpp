@@ -6,11 +6,10 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Components/ArrowComponent.h"
 #include "OddBlastCharacter.h"
+#include "HealthComponent.h"
 
-// Sets default values
 AMonsterPawn::AMonsterPawn()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
@@ -23,16 +22,16 @@ AMonsterPawn::AMonsterPawn()
 	ArrowComponent->SetupAttachment(RootComponent);
 
 	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 }
 
-// Called when the game starts or when spawned
 void AMonsterPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void AMonsterPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -96,15 +95,12 @@ void AMonsterPawn::ResetWalkSpeed()
 {
 }
 
-bool AMonsterPawn::IsDead() const
+UHealthComponent* AMonsterPawn::GetHealthComponent()
 {
-	return false;
+	return HealthComponent;
 }
 
 bool AMonsterPawn::CanAttack() const
 {
 	return false;
 }
-
-
-
