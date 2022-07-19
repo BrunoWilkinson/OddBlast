@@ -51,6 +51,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
 	class UArrowComponent* ArrowComponent;
+	
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	class UHealthComponent* HealthComponent;
 
 	UPROPERTY(EditAnywhere)
 	float MaxHealth = 100.f;

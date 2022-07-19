@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Health.h"
+#include "HealthComponent.h"
 
-UHealth::UHealth()
+UHealthComponent::UHealthComponent()
 {
 	Health = MaxHealth;
 }
 
-bool UHealth::IsDead() const
+bool UHealthComponent::IsDead() const
 {
 	if (Health <= 0)
 	{
@@ -17,8 +17,7 @@ bool UHealth::IsDead() const
 	return false;
 }
 
-void UHealth::ApplyDamage(float Value)
+void UHealthComponent::ApplyDamage(float Value)
 {
 	Health -= FMath::Min(Health, Value);
 }
-
