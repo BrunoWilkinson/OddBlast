@@ -24,7 +24,7 @@ void AMonsterAIController::Tick(float DeltaTime)
 
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
-	if (PlayerPawn != nullptr)
+	if (PlayerPawn != nullptr && GetBlackboardComponent() != nullptr)
 	{
 		GetBlackboardComponent()->SetValueAsObject(TEXT("Player"), PlayerPawn);
 	}
@@ -32,10 +32,10 @@ void AMonsterAIController::Tick(float DeltaTime)
 
 bool AMonsterAIController::IsDead() const
 {
-	AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(GetPawn());
-	if (MonsterPawn != nullptr)
+	AMonsterPawn* MonsterCharacter = Cast<AMonsterPawn>(GetPawn());
+	if (MonsterCharacter != nullptr)
 	{
-		return MonsterPawn->IsDead();
+		return MonsterCharacter->IsDead();
 	}
 	return true;
 }

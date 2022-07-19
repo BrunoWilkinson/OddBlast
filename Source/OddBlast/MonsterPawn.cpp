@@ -3,6 +3,8 @@
 
 #include "MonsterPawn.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
+#include "Components/ArrowComponent.h"
 #include "OddBlastCharacter.h"
 
 // Sets default values
@@ -14,8 +16,13 @@ AMonsterPawn::AMonsterPawn()
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
 	SetRootComponent(CapsuleComponent);
 
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Compomemt"));
+	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh Compomemt"));
 	MeshComponent->SetupAttachment(RootComponent);
+
+	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("Direction"));
+	ArrowComponent->SetupAttachment(RootComponent);
+
+	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 }
 
 // Called when the game starts or when spawned
