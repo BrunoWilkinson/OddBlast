@@ -95,7 +95,7 @@ void AMonsterPawn::ResetWalkSpeed()
 {
 }
 
-UHealthComponent* AMonsterPawn::GetHealthComponent()
+UHealthComponent* AMonsterPawn::GetHealthComponent() const
 {
 	return HealthComponent;
 }

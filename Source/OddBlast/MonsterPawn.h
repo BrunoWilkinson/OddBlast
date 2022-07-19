@@ -32,7 +32,8 @@ public:
 
 	void ResetWalkSpeed();
 
-	UHealthComponent* GetHealthComponent();
+	UFUNCTION(BlueprintPure)
+	UHealthComponent* GetHealthComponent() const;
 
 	UFUNCTION(BlueprintPure)
 	bool CanAttack() const;

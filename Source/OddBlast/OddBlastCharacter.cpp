@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
+#include "HealthComponent.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -36,7 +37,7 @@ AOddBlastCharacter::AOddBlastCharacter()
 	Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
 
-	Health = MaxHealth;
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 }
 
 void AOddBlastCharacter::BeginPlay()
@@ -79,10 +80,9 @@ void AOddBlastCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 float AOddBlastCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	DamageToApply = FMath::Min(Health, DamageToApply);
-	Health -= DamageToApply;
+	HealthComponent->ApplyDamage(DamageToApply);
 
-	if (IsDead())
+	if (HealthComponent->IsDead())
 	{
 		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 		PlayerController->RestartLevel();
@@ -93,13 +93,9 @@ float AOddBlastCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 	return DamageToApply;
 }
 
-bool AOddBlastCharacter::IsDead() const
+UHealthComponent* AOddBlastCharacter::GetHealthComponent() const
 {
-	if (Health <= 0)
-	{
-		return true;
-	}
-	return false;
+	return HealthComponent;
 }
 
 void AOddBlastCharacter::OnPrimaryAction()

@@ -12,6 +12,7 @@ class USceneComponent;
 class UCameraComponent;
 class UAnimMontage;
 class USoundBase;
+class UHealthComponent;
 
 // Declaration of the delegate that will be called when the Primary Action is triggered
 // It is declared as dynamic so it can be accessed also in Blueprints
@@ -45,13 +46,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Interaction")
 	FOnUseItem OnUseItem;
 
+	UFUNCTION(BlueprintPure)
+	UHealthComponent* GetHealthComponent() const;
+
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
-	UFUNCTION(BlueprintPure)
-	bool IsDead() const;
-
 protected:
-	
 	/** Fires a projectile. */
 	void OnPrimaryAction();
 
@@ -106,10 +106,7 @@ public:
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 private:
-	UPROPERTY(EditAnywhere)
-	float MaxHealth = 100.f;
-
-	UPROPERTY(VisibleAnywhere)
-	float Health;
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UHealthComponent* HealthComponent;
 };
 
