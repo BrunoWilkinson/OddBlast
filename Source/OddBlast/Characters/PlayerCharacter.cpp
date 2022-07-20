@@ -2,13 +2,15 @@
 
 #include "PlayerCharacter.h"
 #include "../Items/Projectile.h"
+#include "../Items//Weapon.h"
+#include "../Components/HealthComponent.h"
+#include "../Components/TP_WeaponComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
-#include "../Components/HealthComponent.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,6 +47,20 @@ void APlayerCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
+	UWorld* World = GetWorld();
+	if (WeaponClass != nullptr && World != nullptr)
+	{
+		FActorSpawnParameters ActorSpawnParams;
+		AWeapon* Weapon = World->SpawnActor<AWeapon>(WeaponClass, GetActorLocation() + 100, GetActorRotation(), ActorSpawnParams);
+		if (Weapon != nullptr)
+		{
+			UTP_WeaponComponent* WeaponComponent = Weapon->GetWeaponComponent();
+			if (WeaponComponent != nullptr)
+			{
+				WeaponComponent->AttachWeapon(this);
+			}
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
@@ -91,11 +107,6 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 	}
 
 	return DamageToApply;
-}
-
-UHealthComponent* APlayerCharacter::GetHealthComponent() const
-{
-	return HealthComponent;
 }
 
 void APlayerCharacter::OnPrimaryAction()
