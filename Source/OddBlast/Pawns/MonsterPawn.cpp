@@ -5,7 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Components/ArrowComponent.h"
-#include "../Characters/OddBlastCharacter.h"
+#include "../Characters/PlayerCharacter.h"
 #include "../Components/HealthComponent.h"
 
 AMonsterPawn::AMonsterPawn()
@@ -57,7 +57,7 @@ void AMonsterPawn::Attack()
 
 	if (HasHit && HitResult.GetActor() != nullptr)
 	{
-		AOddBlastCharacter* PlayerCharacter = Cast<AOddBlastCharacter>(HitResult.GetActor());
+		APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(HitResult.GetActor());
 		if (PlayerCharacter != nullptr)
 		{
 			FPointDamageEvent DamageEvent(Damage, HitResult, GetActorForwardVector(), nullptr);

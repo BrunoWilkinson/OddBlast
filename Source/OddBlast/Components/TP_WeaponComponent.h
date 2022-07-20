@@ -6,7 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "TP_WeaponComponent.generated.h"
 
-class AOddBlastCharacter;
+class APlayerCharacter;
+class AProjectile;
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ODDBLAST_API UTP_WeaponComponent : public UActorComponent
@@ -16,7 +17,7 @@ class ODDBLAST_API UTP_WeaponComponent : public UActorComponent
 public:
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
-	TArray<TSubclassOf<class AOddBlastProjectile>> ListProjectileClass;
+	TArray<TSubclassOf<AProjectile>> ListProjectileClass;
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
@@ -35,7 +36,7 @@ public:
 
 	/** Attaches the actor to a FirstPersonCharacter */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
-	void AttachWeapon(AOddBlastCharacter* TargetCharacter);
+	void AttachWeapon(APlayerCharacter* TargetCharacter);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
@@ -48,7 +49,7 @@ protected:
 
 private:
 	/** The Character holding this weapon*/
-	AOddBlastCharacter* Character;
+	APlayerCharacter* Character;
 
 	UPROPERTY(EditAnywhere)
 	float FireRate = 0.5f;

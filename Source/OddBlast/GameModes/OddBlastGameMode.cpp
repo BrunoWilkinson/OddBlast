@@ -2,13 +2,13 @@
 
 #include "OddBlastGameMode.h"
 #include "UObject/ConstructorHelpers.h"
-#include "../Characters/OddBlastCharacter.h"
+#include "../Characters/PlayerCharacter.h"
 
 AOddBlastGameMode::AOddBlastGameMode()
 	: Super()
 {
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/FirstPerson/Blueprints/BP_FirstPersonCharacter"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Core/Character/Player/BP_FirstPersonCharacter"));
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
 }

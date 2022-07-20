@@ -5,8 +5,8 @@
 #include "GameFramework/PlayerController.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Characters/OddBlastCharacter.h"
-#include "../Items/OddBlastProjectile.h"
+#include "../Characters/PlayerCharacter.h"
+#include "../Items/Projectile.h"
 
 // Sets default values for this component's properties
 UTP_WeaponComponent::UTP_WeaponComponent()
@@ -43,7 +43,7 @@ void UTP_WeaponComponent::Fire()
 			int32 RandIndex = FMath::RandRange(0, ListProjectileClass.Num() - 1);
 			if (ListProjectileClass[RandIndex] != nullptr)
 			{
-				World->SpawnActor<AOddBlastProjectile>(ListProjectileClass[RandIndex], SpawnLocation, SpawnRotation, ActorSpawnParams);
+				World->SpawnActor<AProjectile>(ListProjectileClass[RandIndex], SpawnLocation, SpawnRotation, ActorSpawnParams);
 				FTimerHandle FireDelayHandle;
 				GetWorld()->GetTimerManager().SetTimer(FireDelayHandle, this, &UTP_WeaponComponent::ResetCanFire, FireRate, false);
 			}
@@ -82,7 +82,7 @@ void UTP_WeaponComponent::ResetCanFire()
 	CanFire = true;
 }
 
-void UTP_WeaponComponent::AttachWeapon(AOddBlastCharacter* TargetCharacter)
+void UTP_WeaponComponent::AttachWeapon(APlayerCharacter* TargetCharacter)
 {
 	Character = TargetCharacter;
 	if(Character != nullptr)

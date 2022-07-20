@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "OddBlastCharacter.h"
-#include "../Items/OddBlastProjectile.h"
+#include "PlayerCharacter.h"
+#include "../Items/Projectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -12,9 +12,9 @@
 
 
 //////////////////////////////////////////////////////////////////////////
-// AOddBlastCharacter
+// APlayerCharacter
 
-AOddBlastCharacter::AOddBlastCharacter()
+APlayerCharacter::APlayerCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -40,7 +40,7 @@ AOddBlastCharacter::AOddBlastCharacter()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 }
 
-void AOddBlastCharacter::BeginPlay()
+void APlayerCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
@@ -49,7 +49,7 @@ void AOddBlastCharacter::BeginPlay()
 
 //////////////////////////////////////////////////////////////////////////// Input
 
-void AOddBlastCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
@@ -59,25 +59,25 @@ void AOddBlastCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("PrimaryAction", IE_Pressed, this, &AOddBlastCharacter::OnPrimaryAction);
+	PlayerInputComponent->BindAction("PrimaryAction", IE_Pressed, this, &APlayerCharacter::OnPrimaryAction);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
 
 	// Bind movement events
-	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &AOddBlastCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("Move Right / Left", this, &AOddBlastCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &APlayerCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("Move Right / Left", this, &APlayerCharacter::MoveRight);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "Mouse" versions handle devices that provide an absolute delta, such as a mouse.
 	// "Gamepad" versions are for devices that we choose to treat as a rate of change, such as an analog joystick
 	PlayerInputComponent->BindAxis("Turn Right / Left Mouse", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Look Up / Down Mouse", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("Turn Right / Left Gamepad", this, &AOddBlastCharacter::TurnAtRate);
-	PlayerInputComponent->BindAxis("Look Up / Down Gamepad", this, &AOddBlastCharacter::LookUpAtRate);
+	PlayerInputComponent->BindAxis("Turn Right / Left Gamepad", this, &APlayerCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("Look Up / Down Gamepad", this, &APlayerCharacter::LookUpAtRate);
 }
 
-float AOddBlastCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	HealthComponent->ApplyDamage(DamageToApply);
@@ -93,18 +93,18 @@ float AOddBlastCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 	return DamageToApply;
 }
 
-UHealthComponent* AOddBlastCharacter::GetHealthComponent() const
+UHealthComponent* APlayerCharacter::GetHealthComponent() const
 {
 	return HealthComponent;
 }
 
-void AOddBlastCharacter::OnPrimaryAction()
+void APlayerCharacter::OnPrimaryAction()
 {
 	// Trigger the OnItemUsed Event
 	OnUseItem.Broadcast();
 }
 
-void AOddBlastCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
+void APlayerCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
 	if (TouchItem.bIsPressed == true)
 	{
@@ -120,7 +120,7 @@ void AOddBlastCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const F
 	TouchItem.bMoved = false;
 }
 
-void AOddBlastCharacter::EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
+void APlayerCharacter::EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
 	if (TouchItem.bIsPressed == false)
 	{
@@ -129,7 +129,7 @@ void AOddBlastCharacter::EndTouch(const ETouchIndex::Type FingerIndex, const FVe
 	TouchItem.bIsPressed = false;
 }
 
-void AOddBlastCharacter::MoveForward(float Value)
+void APlayerCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0f)
 	{
@@ -138,7 +138,7 @@ void AOddBlastCharacter::MoveForward(float Value)
 	}
 }
 
-void AOddBlastCharacter::MoveRight(float Value)
+void APlayerCharacter::MoveRight(float Value)
 {
 	if (Value != 0.0f)
 	{
@@ -147,24 +147,24 @@ void AOddBlastCharacter::MoveRight(float Value)
 	}
 }
 
-void AOddBlastCharacter::TurnAtRate(float Rate)
+void APlayerCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
 }
 
-void AOddBlastCharacter::LookUpAtRate(float Rate)
+void APlayerCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
 }
 
-bool AOddBlastCharacter::EnableTouchscreenMovement(class UInputComponent* PlayerInputComponent)
+bool APlayerCharacter::EnableTouchscreenMovement(class UInputComponent* PlayerInputComponent)
 {
 	if (FPlatformMisc::SupportsTouchInput() || GetDefault<UInputSettings>()->bUseMouseForTouch)
 	{
-		PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AOddBlastCharacter::BeginTouch);
-		PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AOddBlastCharacter::EndTouch);
+		PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &APlayerCharacter::BeginTouch);
+		PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &APlayerCharacter::EndTouch);
 
 		return true;
 	}

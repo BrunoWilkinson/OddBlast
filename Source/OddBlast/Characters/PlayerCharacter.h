@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "OddBlastCharacter.generated.h"
+#include "PlayerCharacter.generated.h"
 
 class UInputComponent;
 class USkeletalMeshComponent;
@@ -19,7 +19,7 @@ class UHealthComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnUseItem);
 
 UCLASS(config=Game)
-class AOddBlastCharacter : public ACharacter
+class APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -32,7 +32,7 @@ class AOddBlastCharacter : public ACharacter
 	UCameraComponent* FirstPersonCameraComponent;
 
 public:
-	AOddBlastCharacter();
+	APlayerCharacter();
 
 protected:
 	virtual void BeginPlay();
