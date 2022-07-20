@@ -2,11 +2,11 @@
 
 
 #include "TP_WeaponComponent.h"
-#include "OddBlastCharacter.h"
-#include "OddBlastProjectile.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "../Characters/OddBlastCharacter.h"
+#include "../Items/OddBlastProjectile.h"
 
 // Sets default values for this component's properties
 UTP_WeaponComponent::UTP_WeaponComponent()

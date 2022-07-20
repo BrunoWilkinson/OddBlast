@@ -1,14 +1,14 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "OddBlastCharacter.h"
-#include "OddBlastProjectile.h"
+#include "../Items/OddBlastProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
-#include "HealthComponent.h"
+#include "../Components/HealthComponent.h"
 
 
 //////////////////////////////////////////////////////////////////////////

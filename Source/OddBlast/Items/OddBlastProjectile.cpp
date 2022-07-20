@@ -4,7 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
-#include "MonsterPawn.h"
+#include "../Pawns/MonsterPawn.h"
 
 AOddBlastProjectile::AOddBlastProjectile() 
 {

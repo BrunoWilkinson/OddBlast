@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "RifleWeapon.generated.h"
+#include "Weapon.generated.h"
 
 class UTP_PickUpComponent;
 class UTP_WeaponComponent;
 
 UCLASS()
-class ODDBLAST_API ARifleWeapon : public AActor
+class ODDBLAST_API AWeapon : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ARifleWeapon();
+	AWeapon();
 
 public:
 	UFUNCTION(BlueprintPure)

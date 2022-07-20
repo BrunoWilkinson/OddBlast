@@ -3,7 +3,7 @@
 
 #include "BTTask_Attack.h"
 #include "AIController.h"
-#include "MonsterPawn.h"
+#include "../Pawns/MonsterPawn.h"
 
 UBTTask_Attack::UBTTask_Attack()
 {

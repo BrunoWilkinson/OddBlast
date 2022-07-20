@@ -1,8 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "OddBlastGameMode.h"
-#include "OddBlastCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "../Characters/OddBlastCharacter.h"
 
 AOddBlastGameMode::AOddBlastGameMode()
 	: Super()

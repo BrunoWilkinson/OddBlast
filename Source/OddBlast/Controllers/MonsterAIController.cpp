@@ -4,8 +4,8 @@
 #include "MonsterAIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "MonsterPawn.h"
-#include "HealthComponent.h"
+#include "../Pawns/MonsterPawn.h"
+#include "../Components/HealthComponent.h"
 
 void AMonsterAIController::BeginPlay()
 {

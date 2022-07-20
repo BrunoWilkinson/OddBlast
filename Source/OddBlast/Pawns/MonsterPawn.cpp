@@ -5,8 +5,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Components/ArrowComponent.h"
-#include "OddBlastCharacter.h"
-#include "HealthComponent.h"
+#include "../Characters/OddBlastCharacter.h"
+#include "../Components/HealthComponent.h"
 
 AMonsterPawn::AMonsterPawn()
 {
