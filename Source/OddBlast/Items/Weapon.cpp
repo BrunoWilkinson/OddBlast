@@ -15,18 +15,3 @@ AWeapon::AWeapon()
 
 	WeaponComponent = CreateDefaultSubobject<UTP_WeaponComponent>(TEXT("Weapon Component"));
 }
-
-UTP_PickUpComponent* AWeapon::GetPickUpComponent() const
-{
-	return PickUpComponent;
-}
-
-UTP_WeaponComponent* AWeapon::GetWeaponComponent() const
-{
-	return WeaponComponent;
-}
-
-USkeletalMeshComponent* AWeapon::GetMeshComponent() const
-{
-	return MeshComponent;
-}

@@ -20,13 +20,13 @@ public:
 
 public:
 	UFUNCTION(BlueprintPure)
-	UTP_PickUpComponent* GetPickUpComponent() const;
+	UTP_PickUpComponent* GetPickUpComponent() const { return PickUpComponent; };
 
 	UFUNCTION(BlueprintPure)
-	UTP_WeaponComponent* GetWeaponComponent() const;
+	UTP_WeaponComponent* GetWeaponComponent() const { return WeaponComponent; };
 
 	UFUNCTION(BlueprintPure)
-	USkeletalMeshComponent* GetMeshComponent() const;
+	USkeletalMeshComponent* GetMeshComponent() const { return MeshComponent; };
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Component")
