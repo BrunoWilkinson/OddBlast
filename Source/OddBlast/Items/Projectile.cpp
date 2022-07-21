@@ -1,10 +1,11 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Projectile.h"
+#include "../Pawns/MonsterPawn.h"
+#include "../Components/HealthComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
-#include "../Pawns/MonsterPawn.h"
 
 AProjectile::AProjectile() 
 {
@@ -12,7 +13,8 @@ AProjectile::AProjectile()
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-	CollisionComp->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);		// set up a notification for when this component hits something blocking
+	// set up a notification for when this component hits something blocking
+	CollisionComp->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
@@ -43,30 +45,10 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 		AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(OtherActor);
 		if (MonsterPawn != nullptr)
 		{
-			if (DamageProjectile)
+			UHealthComponent* MonsterHealthComponent = MonsterPawn->GetHealthComponent();
+			if (MonsterHealthComponent)
 			{
-				AController* OwnerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-				if (OwnerController != nullptr)
-				{
-					FVector ShotDirection;
-					FVector PlayerViewPointLocation;
-					FRotator PlayerViewPointRotation;
-					OwnerController->GetPlayerViewPoint(PlayerViewPointLocation, PlayerViewPointRotation);
-					ShotDirection = -PlayerViewPointRotation.Vector();
-
-					FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
-					MonsterPawn->TakeDamage(Damage, DamageEvent, OwnerController, this);
-				}
-			}
-
-			if (SlowProjectile)
-			{
-				MonsterPawn->ApplySlow(SlowSpeed, SlowDuration);
-			}
-
-			if (BoopProjectile)
-			{
-				MonsterPawn->ApplyBoop(BoopDistance, BoopDuration);
+				MonsterHealthComponent->ApplyDamage(Damage);
 			}
 		}
 

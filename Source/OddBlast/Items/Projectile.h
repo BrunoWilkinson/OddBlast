@@ -42,27 +42,6 @@ private:
 	float LifeSpan = 2.f;
 
 	UPROPERTY(EditAnywhere)
-	bool DamageProjectile = true;
-
-	UPROPERTY(EditAnywhere)
 	float Damage = 20.f;
-
-	UPROPERTY(EditAnywhere)
-	bool SlowProjectile = false;
-
-	UPROPERTY(EditAnywhere)
-	float SlowSpeed = 100.f;
-
-	UPROPERTY(EditAnywhere)
-	float SlowDuration = 2.f;
-
-	UPROPERTY(EditAnywhere)
-	bool BoopProjectile = false;
-
-	UPROPERTY(EditAnywhere)
-	float BoopDistance = 50.f;
-
-	UPROPERTY(EditAnywhere)
-	float BoopDuration = 2.f;
 };
 
