@@ -15,6 +15,10 @@ class ODDBLAST_API UTP_WeaponComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	/** Sets default values for this component's properties */
+	UTP_WeaponComponent();
+
+public:
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	TArray<TSubclassOf<AProjectile>> ListProjectileClass;
@@ -31,8 +35,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 	FVector MuzzleOffset;
 
-	/** Sets default values for this component's properties */
-	UTP_WeaponComponent();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
+	float FireRate = 0.5f;
 
 	/** Attaches the actor to a FirstPersonCharacter */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
@@ -50,9 +54,6 @@ protected:
 private:
 	/** The Character holding this weapon*/
 	APlayerCharacter* Character;
-
-	UPROPERTY(EditAnywhere)
-	float FireRate = 0.5f;
 
 	bool CanFire = true;
 
