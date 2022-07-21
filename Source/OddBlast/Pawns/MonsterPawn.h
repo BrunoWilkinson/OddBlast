@@ -30,6 +30,8 @@ public:
 
 	void ApplyForce(float Value);
 
+	void ApplyStun(float Duration);
+
 	void ResetWalkSpeed();
 
 	UFUNCTION(BlueprintPure)

@@ -86,6 +86,10 @@ void AMonsterPawn::ApplyForce(float Value)
 {
 }
 
+void AMonsterPawn::ApplyStun(float Duration)
+{
+}
+
 void AMonsterPawn::ResetWalkSpeed()
 {
 }
