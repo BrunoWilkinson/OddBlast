@@ -28,7 +28,7 @@ public:
 
 	void ApplySlow(float Value, float Duration);
 
-	void ApplyBoop(float Value, float Duration);
+	void ApplyForce(float Value);
 
 	void ResetWalkSpeed();
 

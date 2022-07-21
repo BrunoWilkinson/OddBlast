@@ -82,13 +82,8 @@ void AMonsterPawn::ApplySlow(float Value, float Duration)
 	GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterPawn::ResetWalkSpeed, Duration, false);
 }
 
-void AMonsterPawn::ApplyBoop(float Value, float Duration)
+void AMonsterPawn::ApplyForce(float Value)
 {
-	//MovementComponent->JumpZVelocity = Value;
-	//Jump();
-	// MovementComponent->MaxWalkSpeed = 0;
-	FTimerHandle BoopDelayHandle;
-	GetWorld()->GetTimerManager().SetTimer(BoopDelayHandle, this, &AMonsterPawn::ResetWalkSpeed, Duration, false);
 }
 
 void AMonsterPawn::ResetWalkSpeed()

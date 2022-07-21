@@ -38,10 +38,10 @@ public:
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Projectile Properties")
 	float LifeSpan = 2.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Projectile Properties")
 	float Damage = 20.f;
 };
 
