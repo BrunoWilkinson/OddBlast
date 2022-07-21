@@ -90,6 +90,10 @@ void AMonsterPawn::ApplyStun(float Duration)
 {
 }
 
+void AMonsterPawn::ApplyPoison(float Value, float Duration)
+{
+}
+
 void AMonsterPawn::ResetWalkSpeed()
 {
 }

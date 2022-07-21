@@ -37,11 +37,12 @@ public:
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
+protected:
+	UPROPERTY(EditAnywhere, Category = "Projectile Properties")
+	float Damage = 20.f;
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Projectile Properties")
 	float LifeSpan = 2.f;
-
-	UPROPERTY(EditAnywhere, Category = "Projectile Properties")
-	float Damage = 20.f;
 };
 

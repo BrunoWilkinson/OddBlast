@@ -32,6 +32,8 @@ public:
 
 	void ApplyStun(float Duration);
 
+	void ApplyPoison(float Value, float Duration);
+
 	void ResetWalkSpeed();
 
 	UFUNCTION(BlueprintPure)
