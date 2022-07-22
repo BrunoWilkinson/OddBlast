@@ -7,6 +7,8 @@
 
 AWeapon::AWeapon()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	PickUpComponent = CreateDefaultSubobject<UTP_PickUpComponent>(TEXT("PickUp Component"));
 	PickUpComponent->SetupAttachment(RootComponent);
 

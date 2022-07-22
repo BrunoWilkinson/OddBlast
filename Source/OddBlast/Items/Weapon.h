@@ -13,6 +13,15 @@ UCLASS()
 class ODDBLAST_API AWeapon : public AActor
 {
 	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, Category = "Component")
+	UTP_PickUpComponent* PickUpComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Component")
+	UTP_WeaponComponent* WeaponComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Component")
+	USkeletalMeshComponent* MeshComponent;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -27,14 +36,4 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	USkeletalMeshComponent* GetMeshComponent() const { return MeshComponent; };
-
-private:
-	UPROPERTY(VisibleAnywhere, Category = "Component")
-	UTP_PickUpComponent* PickUpComponent;
-
-	UPROPERTY(VisibleAnywhere, Category = "Component")
-	UTP_WeaponComponent* WeaponComponent;
-
-	UPROPERTY(VisibleAnywhere, Category = "Component")
-	USkeletalMeshComponent* MeshComponent;
 };

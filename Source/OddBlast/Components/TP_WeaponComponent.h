@@ -18,6 +18,7 @@ enum ProjectileType
 	Poison UMETA(DisplayName = "Poison"),
 	Force UMETA(DisplayName = "Force"),
 	Block UMETA(DisplayName = "Block"),
+	END,
 };
 
 USTRUCT(BlueprintType)
@@ -42,9 +43,7 @@ public:
 	UTP_WeaponComponent();
 
 public:
-	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly, Category=Projectile)
-	TArray<TSubclassOf<AProjectile>> ListProjectileClass;
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 	TArray<FProjectileInfo> ProjectileList;
@@ -64,6 +63,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 	float FireRate = 0.5f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	float ProjectileTypeInterval = 5.f;
+
 	/** Attaches the actor to a FirstPersonCharacter */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void AttachWeapon(APlayerCharacter* TargetCharacter);
@@ -71,18 +73,25 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
 
+	UFUNCTION(BlueprintPure)
+	TEnumAsByte<ProjectileType> GetCurrentProjectileType() const { return CurrentProjectileType; }
+
+	TEnumAsByte<ProjectileType> SetCurrentProjectileType(TEnumAsByte<ProjectileType> Type);
+
 protected:
 	/** Ends gameplay for this component. */
 	UFUNCTION()
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-		
 
 private:
+	void UpdateProjectileType();
+
 	/** The Character holding this weapon*/
 	APlayerCharacter* Character;
+
+	TEnumAsByte<ProjectileType> CurrentProjectileType;
 
 	bool CanFire = true;
 
 	void ResetCanFire();
-
 };

@@ -15,6 +15,12 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 	MuzzleOffset = FVector(100.0f, 0.0f, 10.0f);
 }
 
+void UTP_WeaponComponent::BeginPlay()
+{
+	FTimerHandle ProjectileTypeIntervalHandle;
+	GetWorld()->GetTimerManager().SetTimer(ProjectileTypeIntervalHandle, this, &UTP_WeaponComponent::UpdateProjectileType, ProjectileTypeInterval, true);
+}
+
 
 void UTP_WeaponComponent::Fire()
 {
@@ -24,7 +30,7 @@ void UTP_WeaponComponent::Fire()
 	}
 
 	// Try and fire a projectile
-	if (ListProjectileClass.Num() > 0 && CanFire)
+	if (ProjectileList.Num() > 0 && CanFire)
 	{
 		CanFire = false;
 		UWorld* const World = GetWorld();
@@ -40,12 +46,17 @@ void UTP_WeaponComponent::Fire()
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	
 			// Spawn the projectile at the muzzle
-			int32 RandIndex = FMath::RandRange(0, ListProjectileClass.Num() - 1);
-			if (ListProjectileClass[RandIndex] != nullptr)
+			for (const FProjectileInfo& Projectile : ProjectileList)
 			{
-				World->SpawnActor<AProjectile>(ListProjectileClass[RandIndex], SpawnLocation, SpawnRotation, ActorSpawnParams);
-				FTimerHandle FireDelayHandle;
-				GetWorld()->GetTimerManager().SetTimer(FireDelayHandle, this, &UTP_WeaponComponent::ResetCanFire, FireRate, false);
+				if (CurrentProjectileType == Projectile.Type)
+				{
+					if (Projectile.Class != nullptr)
+					{
+						World->SpawnActor<AProjectile>(Projectile.Class, SpawnLocation, SpawnRotation, ActorSpawnParams);
+						FTimerHandle FireDelayHandle;
+						GetWorld()->GetTimerManager().SetTimer(FireDelayHandle, this, &UTP_WeaponComponent::ResetCanFire, FireRate, false);
+					}
+				}
 			}
 		}
 
@@ -68,6 +79,12 @@ void UTP_WeaponComponent::Fire()
 	}
 }
 
+TEnumAsByte<ProjectileType> UTP_WeaponComponent::SetCurrentProjectileType(TEnumAsByte<ProjectileType> Type)
+{
+	CurrentProjectileType = Type;
+	return CurrentProjectileType;
+}
+
 void UTP_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if(Character != nullptr)
@@ -75,6 +92,16 @@ void UTP_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		// Unregister from the OnUseItem Event
 		Character->OnUseItem.RemoveDynamic(this, &UTP_WeaponComponent::Fire);
 	}
+}
+
+void UTP_WeaponComponent::UpdateProjectileType()
+{
+	TEnumAsByte<ProjectileType> NextType = ProjectileType(FMath::FRandRange(0, ProjectileType(END)));
+	while (CurrentProjectileType == NextType)
+	{
+		NextType = ProjectileType(FMath::FRandRange(0, ProjectileType(END)));
+	}
+	CurrentProjectileType = NextType;
 }
 
 void UTP_WeaponComponent::ResetCanFire()
