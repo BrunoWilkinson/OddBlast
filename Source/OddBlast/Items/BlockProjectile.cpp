@@ -12,11 +12,12 @@ void ABlockProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 	UWorld* World = GetWorld();
 	AMonsterPawn* Monster = Cast<AMonsterPawn>(OtherActor);
 
-	if (World != nullptr && BlockActorClass != nullptr && Monster != nullptr)
+	if (World != nullptr && BlockActorClass != nullptr)
 	{
+		
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-		World->SpawnActor<ABlockActor>(BlockActorClass, OtherActor->GetActorLocation(), OtherActor->GetActorRotation(), ActorSpawnParams);
+		World->SpawnActor<ABlockActor>(BlockActorClass, Hit.ImpactPoint, Hit.ImpactNormal.Rotation(), ActorSpawnParams);
 	}
 }
