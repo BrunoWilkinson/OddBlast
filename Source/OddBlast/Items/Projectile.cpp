@@ -45,11 +45,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 		AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(OtherActor);
 		if (MonsterPawn != nullptr)
 		{
-			UHealthComponent* MonsterHealthComponent = MonsterPawn->GetHealthComponent();
-			if (MonsterHealthComponent)
-			{
-				MonsterHealthComponent->ApplyDamage(Damage);
-			}
+			MonsterPawn->ApplyDamage(Damage);
 		}
 
 		Destroy();

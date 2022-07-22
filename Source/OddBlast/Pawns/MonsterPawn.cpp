@@ -75,6 +75,15 @@ void AMonsterPawn::ResetCanAttack()
 	IsAttacking = false;
 }
 
+void AMonsterPawn::ApplyDamage(float Value)
+{
+	HealthComponent->ApplyDamage(Value);
+	if (HealthComponent->IsDead())
+	{
+		Destroy();
+	}
+}
+
 void AMonsterPawn::ApplySlow(float Value, float Duration)
 {
 	FTimerHandle SlowDelayHandle;

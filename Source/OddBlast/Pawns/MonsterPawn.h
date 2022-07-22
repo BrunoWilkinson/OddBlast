@@ -26,6 +26,8 @@ public:
 
 	void ResetCanAttack();
 
+	void ApplyDamage(float Value);
+
 	void ApplySlow(float Value, float Duration);
 
 	void ApplyForce(float Value);
