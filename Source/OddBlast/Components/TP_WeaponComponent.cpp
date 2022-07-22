@@ -5,6 +5,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "UObject/UObjectGlobals.h"
 #include "../Characters/PlayerCharacter.h"
 #include "../Items/Projectile.h"
 
@@ -79,7 +80,7 @@ void UTP_WeaponComponent::Fire()
 	}
 }
 
-TEnumAsByte<ProjectileType> UTP_WeaponComponent::SetCurrentProjectileType(TEnumAsByte<ProjectileType> Type)
+TEnumAsByte<EProjectileType> UTP_WeaponComponent::SetCurrentProjectileType(TEnumAsByte<EProjectileType> Type)
 {
 	CurrentProjectileType = Type;
 	return CurrentProjectileType;
@@ -96,10 +97,13 @@ void UTP_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void UTP_WeaponComponent::UpdateProjectileType()
 {
-	TEnumAsByte<ProjectileType> NextType = ProjectileType(FMath::FRandRange(0, ProjectileType(END)));
+	const UEnum* EnumProjectileType = FindObject<UEnum>(ANY_PACKAGE, TEXT("EProjectileType"), true);
+	int64 Min = 0;
+
+	TEnumAsByte<EProjectileType> NextType = EProjectileType(FMath::RandRange(Min, EnumProjectileType->GetMaxEnumValue() - 1));
 	while (CurrentProjectileType == NextType)
 	{
-		NextType = ProjectileType(FMath::FRandRange(0, ProjectileType(END)));
+		NextType = EProjectileType(FMath::RandRange(Min, EnumProjectileType->GetMaxEnumValue() - 1));
 	}
 	CurrentProjectileType = NextType;
 }

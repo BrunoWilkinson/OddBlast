@@ -10,7 +10,7 @@ class APlayerCharacter;
 class AProjectile;
 
 UENUM()
-enum ProjectileType
+enum EProjectileType
 {
 	Normal UMETA(DisplayName = "Normal"),
 	Slow UMETA(DisplayName = "Slow"),
@@ -18,7 +18,6 @@ enum ProjectileType
 	Poison UMETA(DisplayName = "Poison"),
 	Force UMETA(DisplayName = "Force"),
 	Block UMETA(DisplayName = "Block"),
-	END,
 };
 
 USTRUCT(BlueprintType)
@@ -30,7 +29,7 @@ struct FProjectileInfo
 	TSubclassOf<AProjectile> Class;
 
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TEnumAsByte<ProjectileType> Type;
+	TEnumAsByte<EProjectileType> Type;
 };
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -74,9 +73,9 @@ public:
 	void Fire();
 
 	UFUNCTION(BlueprintPure)
-	TEnumAsByte<ProjectileType> GetCurrentProjectileType() const { return CurrentProjectileType; }
+	TEnumAsByte<EProjectileType> GetCurrentProjectileType() const { return CurrentProjectileType; }
 
-	TEnumAsByte<ProjectileType> SetCurrentProjectileType(TEnumAsByte<ProjectileType> Type);
+	TEnumAsByte<EProjectileType> SetCurrentProjectileType(TEnumAsByte<EProjectileType> Type);
 
 protected:
 	/** Ends gameplay for this component. */
@@ -89,7 +88,7 @@ private:
 	/** The Character holding this weapon*/
 	APlayerCharacter* Character;
 
-	TEnumAsByte<ProjectileType> CurrentProjectileType;
+	TEnumAsByte<EProjectileType> CurrentProjectileType;
 
 	bool CanFire = true;
 
