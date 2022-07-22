@@ -102,6 +102,9 @@ void AMonsterPawn::ApplyForce(float Value, FVector Velocity)
 
 void AMonsterPawn::ApplyStun(float Duration)
 {
+	FloatingPawnMovement->MaxSpeed = 0.f;
+	FTimerHandle StunDelayHandle;
+	GetWorld()->GetTimerManager().SetTimer(StunDelayHandle, this, &AMonsterPawn::ResetWalkSpeed, Duration, false);
 }
 
 void AMonsterPawn::ApplyPoison(float Value, float Duration)
