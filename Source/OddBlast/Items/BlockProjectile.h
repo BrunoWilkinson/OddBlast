@@ -6,6 +6,8 @@
 #include "../Items/Projectile.h"
 #include "BlockProjectile.generated.h"
 
+class ABlockActor;
+
 /**
  * 
  */
@@ -19,6 +21,5 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Projectile Properties")
-	float Duration;
-	
+	TSubclassOf<ABlockActor> BlockActorClass;
 };
