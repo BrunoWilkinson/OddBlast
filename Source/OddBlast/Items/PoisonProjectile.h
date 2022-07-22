@@ -20,4 +20,7 @@ public:
 private:
 	UPROPERTY(EditAnywhere, Category = "Projectile Properties")
 	float Duration;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile Properties")
+	float DamageInterval;
 };

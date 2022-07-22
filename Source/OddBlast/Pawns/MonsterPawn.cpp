@@ -36,7 +36,6 @@ void AMonsterPawn::BeginPlay()
 void AMonsterPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AMonsterPawn::Attack()
@@ -107,8 +106,16 @@ void AMonsterPawn::ApplyStun(float Duration)
 	GetWorld()->GetTimerManager().SetTimer(StunDelayHandle, this, &AMonsterPawn::ResetWalkSpeed, Duration, false);
 }
 
-void AMonsterPawn::ApplyPoison(float Value, float Duration)
+void AMonsterPawn::ApplyPoison(float Value, float Duration, float DamageInterval)
 {
+	int32 Counter = 0;
+	while (Duration > Counter)
+	{
+		FTimerHandle PoisonDelayHandle;
+		FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &AMonsterPawn::ApplyDamage, Value);
+		GetWorld()->GetTimerManager().SetTimer(PoisonDelayHandle, TimerDelegate, DamageInterval + Counter, false);
+		Counter++;
+	}
 }
 
 void AMonsterPawn::ResetWalkSpeed()

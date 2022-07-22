@@ -52,7 +52,7 @@ public:
 
 	void ApplyStun(float Duration);
 
-	void ApplyPoison(float Value, float Duration);
+	void ApplyPoison(float Value, float Duration, float DamageInterval);
 
 	void ResetWalkSpeed();
 

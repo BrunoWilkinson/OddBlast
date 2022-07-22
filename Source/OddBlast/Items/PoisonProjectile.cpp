@@ -11,6 +11,6 @@ void APoisonProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(OtherActor);
 	if (MonsterPawn != nullptr)
 	{
-		MonsterPawn->ApplyPoison(Damage, Duration);
+		MonsterPawn->ApplyPoison(Damage, Duration, DamageInterval);
 	}
 }
