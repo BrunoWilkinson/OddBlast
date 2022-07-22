@@ -48,7 +48,7 @@ public:
 
 	void ApplySlow(float Value, float Duration);
 
-	void ApplyForce(float Value);
+	void ApplyForce(float Value, FVector Velocity);
 
 	void ApplyStun(float Duration);
 

@@ -95,8 +95,9 @@ void AMonsterPawn::ApplySlow(float Value, float Duration)
 	}
 }
 
-void AMonsterPawn::ApplyForce(float Value)
+void AMonsterPawn::ApplyForce(float Value, FVector Velocity)
 {
+	CapsuleComponent->AddImpulseAtLocation(Velocity * Value, GetActorLocation());
 }
 
 void AMonsterPawn::ApplyStun(float Duration)

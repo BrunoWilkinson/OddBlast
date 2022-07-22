@@ -11,6 +11,6 @@ void AForceProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 	AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(OtherActor);
 	if (MonsterPawn != nullptr)
 	{
-		MonsterPawn->ApplyForce(Strength);
+		MonsterPawn->ApplyForce(Strength, GetVelocity());
 	}
 }
