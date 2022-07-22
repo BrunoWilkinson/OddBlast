@@ -7,11 +7,29 @@
 #include "MonsterPawn.generated.h"
 
 class UHealthComponent;
+class UCapsuleComponent;
+class UFloatingPawnMovement;
+class UArrowComponent;
 
 UCLASS()
 class ODDBLAST_API AMonsterPawn : public APawn
 {
 	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	USkeletalMeshComponent* MeshComponent;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UCapsuleComponent* CapsuleComponent;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UFloatingPawnMovement* FloatingPawnMovement;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UArrowComponent* ArrowComponent;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UHealthComponent* HealthComponent;
 
 public:
 	AMonsterPawn();
@@ -39,27 +57,12 @@ public:
 	void ResetWalkSpeed();
 
 	UFUNCTION(BlueprintPure)
-	UHealthComponent* GetHealthComponent() const;
+	UHealthComponent* GetHealthComponent() const { return HealthComponent; };
 
 	UFUNCTION(BlueprintPure)
 	bool CanAttack() const;
 
 private:
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	USkeletalMeshComponent * MeshComponent;
-
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	class UCapsuleComponent* CapsuleComponent;
-
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	class UFloatingPawnMovement* FloatingPawnMovement;
-
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	class UArrowComponent* ArrowComponent;
-	
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	UHealthComponent* HealthComponent;
-
 	UPROPERTY(EditAnywhere)
 	float Damage = 20.f;
 
@@ -69,7 +72,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MeleeRadius = 50.f;
 
-	float DefaultWalkSpeed = 300.f;
+	UPROPERTY(EditAnywhere)
+	float MinWalkSpeed = 50.f;
+
+	float DefaultWalkSpeed;
 
 	bool IsAttacking;
 };

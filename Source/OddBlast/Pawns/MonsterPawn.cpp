@@ -30,6 +30,7 @@ void AMonsterPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	DefaultWalkSpeed = FloatingPawnMovement->GetMaxSpeed();
 }
 
 void AMonsterPawn::Tick(float DeltaTime)
@@ -86,9 +87,12 @@ void AMonsterPawn::ApplyDamage(float Value)
 
 void AMonsterPawn::ApplySlow(float Value, float Duration)
 {
-	FTimerHandle SlowDelayHandle;
-	// MovementComponent->MaxWalkSpeed -= Value;
-	GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterPawn::ResetWalkSpeed, Duration, false);
+	if (FloatingPawnMovement->GetMaxSpeed() > MinWalkSpeed)
+	{
+		FloatingPawnMovement->MaxSpeed -= FMath::Min(FloatingPawnMovement->GetMaxSpeed(), Value);
+		FTimerHandle SlowDelayHandle;
+		GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterPawn::ResetWalkSpeed, Duration, false);
+	}
 }
 
 void AMonsterPawn::ApplyForce(float Value)
@@ -105,11 +109,7 @@ void AMonsterPawn::ApplyPoison(float Value, float Duration)
 
 void AMonsterPawn::ResetWalkSpeed()
 {
-}
-
-UHealthComponent* AMonsterPawn::GetHealthComponent() const
-{
-	return HealthComponent;
+	FloatingPawnMovement->MaxSpeed = DefaultWalkSpeed;
 }
 
 bool AMonsterPawn::CanAttack() const
