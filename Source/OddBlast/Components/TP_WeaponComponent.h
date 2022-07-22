@@ -9,6 +9,29 @@
 class APlayerCharacter;
 class AProjectile;
 
+UENUM()
+enum ProjectileType
+{
+	Normal UMETA(DisplayName = "Normal"),
+	Slow UMETA(DisplayName = "Slow"),
+	Stun UMETA(DisplayName = "Stun"),
+	Poison UMETA(DisplayName = "Poison"),
+	Force UMETA(DisplayName = "Force"),
+	Block UMETA(DisplayName = "Block"),
+};
+
+USTRUCT(BlueprintType)
+struct FProjectileInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<AProjectile> Class;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TEnumAsByte<ProjectileType> Type;
+};
+
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ODDBLAST_API UTP_WeaponComponent : public UActorComponent
 {
@@ -22,6 +45,9 @@ public:
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	TArray<TSubclassOf<AProjectile>> ListProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TArray<FProjectileInfo> ProjectileList;
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
@@ -58,4 +84,5 @@ private:
 	bool CanFire = true;
 
 	void ResetCanFire();
+
 };
