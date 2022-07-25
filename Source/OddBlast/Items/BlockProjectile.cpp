@@ -3,14 +3,14 @@
 
 #include "../Items/BlockProjectile.h"
 #include "../Items/BlockActor.h"
-#include "../Pawns//MonsterPawn.h"
+#include "../Characters/MonsterCharacter.h"
 
 void ABlockProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 
 	UWorld* World = GetWorld();
-	AMonsterPawn* Monster = Cast<AMonsterPawn>(OtherActor);
+	AMonsterCharacter* Monster = Cast<AMonsterCharacter>(OtherActor);
 
 	if (World != nullptr && BlockActorClass != nullptr)
 	{

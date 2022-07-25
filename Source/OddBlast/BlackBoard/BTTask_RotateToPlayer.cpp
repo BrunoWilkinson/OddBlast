@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "../BlackBoard/BTTask_RotateToPlayer.h"
+#include "../Characters/MonsterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
 #include "Kismet/GameplayStatics.h"
-#include "../BlackBoard/BTTask_RotateToPlayer.h"
-#include "../Pawns/MonsterPawn.h"
 
 UBTTask_RotateToPlayer::UBTTask_RotateToPlayer()
 {
@@ -20,8 +20,8 @@ EBTNodeResult::Type UBTTask_RotateToPlayer::ExecuteTask(UBehaviorTreeComponent& 
 		return EBTNodeResult::Failed;
 	}
 
-	AMonsterPawn* AIPawn = Cast<AMonsterPawn>(OwnerComp.GetAIOwner()->GetPawn());
-	if (AIPawn == nullptr)
+	AMonsterCharacter* Monster = Cast<AMonsterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	if (Monster == nullptr)
 	{
 		return EBTNodeResult::Failed;
 	}
@@ -32,7 +32,7 @@ EBTNodeResult::Type UBTTask_RotateToPlayer::ExecuteTask(UBehaviorTreeComponent& 
 		return EBTNodeResult::Failed;
 	}
 
-	FRotator CurrentRotation = AIPawn->GetActorRotation();
+	FRotator CurrentRotation = Monster->GetActorRotation();
 	FRotator PlayerRotation = Player->GetActorRotation();
 	FRotator TargetRotation = CurrentRotation + PlayerRotation;
 	float Speed = PlayerRotation.Euler().Length() / RotationDelay;
@@ -40,7 +40,7 @@ EBTNodeResult::Type UBTTask_RotateToPlayer::ExecuteTask(UBehaviorTreeComponent& 
 
 	FRotator NewRotation = FMath::RInterpConstantTo(CurrentRotation, TargetRotation, DeltaTime, Speed);
 
-	AIPawn->SetActorRotation(NewRotation);
+	Monster->SetActorRotation(NewRotation);
 
 	return EBTNodeResult::Succeeded;
 }

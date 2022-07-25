@@ -2,15 +2,15 @@
 
 
 #include "../Items/SlowProjectile.h"
-#include "../Pawns/MonsterPawn.h"
+#include "../Characters/MonsterCharacter.h"
 
 void ASlowProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 
-	AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(OtherActor);
-	if (MonsterPawn != nullptr)
+	AMonsterCharacter* Monster = Cast<AMonsterCharacter>(OtherActor);
+	if (Monster != nullptr)
 	{
-		MonsterPawn->ApplySlow(Speed, Duration);
+		Monster->ApplySlow(Speed, Duration);
 	}
 }

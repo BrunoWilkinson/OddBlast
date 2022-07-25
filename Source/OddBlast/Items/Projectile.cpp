@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Projectile.h"
-#include "../Pawns/MonsterPawn.h"
+#include "../Characters/MonsterCharacter.h"
 #include "../Components/HealthComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -42,10 +42,10 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 {
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
-		AMonsterPawn* MonsterPawn = Cast<AMonsterPawn>(OtherActor);
-		if (MonsterPawn != nullptr)
+		AMonsterCharacter* Monster = Cast<AMonsterCharacter>(OtherActor);
+		if (Monster != nullptr)
 		{
-			MonsterPawn->ApplyDamage(Damage);
+			Monster->ApplyDamage(Damage);
 		}
 
 		Destroy();

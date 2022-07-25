@@ -3,41 +3,29 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
-#include "MonsterPawn.generated.h"
+#include "GameFramework/Character.h"
+#include "MonsterCharacter.generated.h"
 
 class UHealthComponent;
-class UCapsuleComponent;
-class UFloatingPawnMovement;
-class UArrowComponent;
 
 UCLASS()
-class ODDBLAST_API AMonsterPawn : public APawn
+class ODDBLAST_API AMonsterCharacter : public ACharacter
 {
 	GENERATED_BODY()
-
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	USkeletalMeshComponent* MeshComponent;
-
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	UCapsuleComponent* CapsuleComponent;
-
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	UFloatingPawnMovement* FloatingPawnMovement;
-
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
-	UArrowComponent* ArrowComponent;
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
 	UHealthComponent* HealthComponent;
 
 public:
-	AMonsterPawn();
+	// Sets default values for this character's properties
+	AMonsterCharacter();
 
 protected:
+	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void Attack();

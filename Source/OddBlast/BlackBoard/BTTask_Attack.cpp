@@ -3,7 +3,7 @@
 
 #include "BTTask_Attack.h"
 #include "AIController.h"
-#include "../Pawns/MonsterPawn.h"
+#include "../Characters/MonsterCharacter.h"
 
 UBTTask_Attack::UBTTask_Attack()
 {
@@ -19,13 +19,13 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		return EBTNodeResult::Failed;
 	}
 
-	AMonsterPawn* AIPawn = Cast<AMonsterPawn>(OwnerComp.GetAIOwner()->GetPawn());
-	if (AIPawn == nullptr)
+	AMonsterCharacter* Monster = Cast<AMonsterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	if (Monster == nullptr)
 	{
 		return EBTNodeResult::Failed;
 	}
 
-	AIPawn->Attack();
+	Monster->Attack();
 
 	return EBTNodeResult::Succeeded;
 }
