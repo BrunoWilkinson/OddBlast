@@ -3,15 +3,30 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
 #include "MonsterCharacter.generated.h"
 
 class UHealthComponent;
+class UCapsuleComponent;
+class UFloatingPawnMovement;
+class UArrowComponent;
 
 UCLASS()
-class ODDBLAST_API AMonsterCharacter : public ACharacter
+class ODDBLAST_API AMonsterCharacter : public APawn
 {
 	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	USkeletalMeshComponent* MeshComponent;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UCapsuleComponent* CapsuleComponent;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UFloatingPawnMovement* FloatingPawnMovementComponent;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UArrowComponent* ArrowComponent;
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Components")
 	UHealthComponent* HealthComponent;
@@ -63,7 +78,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MinWalkSpeed = 50.f;
 
-	float DefaultWalkSpeed;
+	float DefaultSpeed;
 
 	bool IsAttacking;
 };

@@ -3,14 +3,26 @@
 #include "../Characters/MonsterCharacter.h"
 #include "../Characters/PlayerCharacter.h"
 #include "../Components/HealthComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/ArrowComponent.h"
 
 // Sets default values
 AMonsterCharacter::AMonsterCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
+	SetRootComponent(CapsuleComponent);
+
+	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh Component"));
+	MeshComponent->SetupAttachment(RootComponent);
+
+	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow Component"));
+	ArrowComponent->SetupAttachment(RootComponent);
+
+	FloatingPawnMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>("Movement Component");
 
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 }
@@ -20,9 +32,9 @@ void AMonsterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (GetCharacterMovement() != nullptr)
+	if (FloatingPawnMovementComponent != nullptr)
 	{
-		DefaultWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+		DefaultSpeed = FloatingPawnMovementComponent->GetMaxSpeed();
 	}
 }
 
@@ -80,9 +92,9 @@ void AMonsterCharacter::ApplyDamage(float Value)
 
 void AMonsterCharacter::ApplySlow(float Value, float Duration)
 {
-	if (GetCharacterMovement() != nullptr && GetCharacterMovement()->MaxWalkSpeed > MinWalkSpeed)
+	if (FloatingPawnMovementComponent != nullptr && FloatingPawnMovementComponent->GetMaxSpeed() > MinWalkSpeed)
 	{
-		GetCharacterMovement()->MaxWalkSpeed -= FMath::Min(GetCharacterMovement()->MaxWalkSpeed, Value);
+		FloatingPawnMovementComponent->MaxSpeed -= FMath::Min(FloatingPawnMovementComponent->GetMaxSpeed(), Value);
 		FTimerHandle SlowDelayHandle;
 		GetWorld()->GetTimerManager().SetTimer(SlowDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
 	}
@@ -90,17 +102,17 @@ void AMonsterCharacter::ApplySlow(float Value, float Duration)
 
 void AMonsterCharacter::ApplyForce(float Value, FVector Velocity)
 {
-	if (GetCharacterMovement() != nullptr)
+	if (CapsuleComponent != nullptr)
 	{
-		GetCharacterMovement()->Launch(Velocity);
+		CapsuleComponent->AddImpulseAtLocation(Velocity * Value, GetActorLocation());
 	}
 }
 
 void AMonsterCharacter::ApplyStun(float Duration)
 {
-	if (GetCharacterMovement() != nullptr)
+	if (FloatingPawnMovementComponent != nullptr)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = 0.f;
+		FloatingPawnMovementComponent->MaxSpeed = 0.f;
 		FTimerHandle StunDelayHandle;
 		GetWorld()->GetTimerManager().SetTimer(StunDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
 	}
@@ -120,9 +132,9 @@ void AMonsterCharacter::ApplyPoison(float Value, float Duration, float DamageInt
 
 void AMonsterCharacter::ResetWalkSpeed()
 {
-	if (GetCharacterMovement() != nullptr)
+	if (FloatingPawnMovementComponent != nullptr)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+		FloatingPawnMovementComponent->MaxSpeed = DefaultSpeed;
 	}
 }
 
