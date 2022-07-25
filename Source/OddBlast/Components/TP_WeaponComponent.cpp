@@ -49,7 +49,17 @@ void UTP_WeaponComponent::Fire()
 			// Spawn the projectile at the muzzle
 			for (const FProjectileInfo& Projectile : ProjectileList)
 			{
-				if (CurrentProjectileType == Projectile.Type)
+				if (DebugMode && DebugType == Projectile.Type)
+				{
+					if (Projectile.Class != nullptr)
+					{
+						World->SpawnActor<AProjectile>(Projectile.Class, SpawnLocation, SpawnRotation, ActorSpawnParams);
+						FTimerHandle FireDelayHandle;
+						GetWorld()->GetTimerManager().SetTimer(FireDelayHandle, this, &UTP_WeaponComponent::ResetCanFire, FireRate, false);
+					}
+				}
+
+				if (!DebugMode && CurrentProjectileType == Projectile.Type)
 				{
 					if (Projectile.Class != nullptr)
 					{

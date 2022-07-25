@@ -83,6 +83,12 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 private:
+	UPROPERTY(EditAnywhere, Category = Projectile)
+	bool DebugMode = false;
+
+	UPROPERTY(EditAnywhere, Category = Projectile)
+	TEnumAsByte<EProjectileType> DebugType;
+
 	void UpdateProjectileType();
 
 	/** The Character holding this weapon*/

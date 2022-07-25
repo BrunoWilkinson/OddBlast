@@ -90,9 +90,9 @@ void AMonsterCharacter::ApplySlow(float Value, float Duration)
 
 void AMonsterCharacter::ApplyForce(float Value, FVector Velocity)
 {
-	if (GetCapsuleComponent() != nullptr)
+	if (GetCharacterMovement() != nullptr)
 	{
-		GetCapsuleComponent()->AddImpulseAtLocation(Velocity * Value, GetActorLocation());
+		GetCharacterMovement()->Launch(Velocity);
 	}
 }
 
@@ -100,7 +100,7 @@ void AMonsterCharacter::ApplyStun(float Duration)
 {
 	if (GetCharacterMovement() != nullptr)
 	{
-		GetCharacterMovement()->StopMovementImmediately();
+		GetCharacterMovement()->MaxWalkSpeed = 0.f;
 		FTimerHandle StunDelayHandle;
 		GetWorld()->GetTimerManager().SetTimer(StunDelayHandle, this, &AMonsterCharacter::ResetWalkSpeed, Duration, false);
 	}
