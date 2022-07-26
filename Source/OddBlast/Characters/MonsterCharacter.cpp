@@ -3,6 +3,8 @@
 #include "../Characters/MonsterCharacter.h"
 #include "../Characters/PlayerCharacter.h"
 #include "../Components/HealthComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/ArrowComponent.h"
@@ -31,6 +33,8 @@ AMonsterCharacter::AMonsterCharacter()
 void AMonsterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	IsAttacking = false;
 	
 	if (FloatingPawnMovementComponent != nullptr)
 	{
@@ -42,15 +46,36 @@ void AMonsterCharacter::BeginPlay()
 void AMonsterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (IsAttacking)
+	{
+		FVector Start = MeshComponent->GetSocketLocation(TEXT("RightPaw"));
+		FVector End = MeshComponent->GetSocketLocation(TEXT("RightFinger"));
+
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, true, -1.0f, 0, 10);
+
+		HasHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_GameTraceChannel2);
+	}
 }
 
 void AMonsterCharacter::Attack()
 {
 	if (!IsAttacking) 
 	{
-		// FPointDamageEvent DamageEvent(Damage, HitResult, GetActorForwardVector(), nullptr);
-		// PlayerCharacter->TakeDamage(Damage, DamageEvent, GetController(), this);
 		IsAttacking = true;
+		UE_LOG(LogTemp, Warning, TEXT("The boolean value is %s"), (HasHit ? TEXT("true") : TEXT("false")));
+		if (HasHit)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Something Hit"));
+			APlayerCharacter* Player = Cast<APlayerCharacter>(HitResult.GetActor());
+			if (Player != nullptr)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Player Hit"));
+				FPointDamageEvent DamageEvent(Damage, HitResult, GetActorForwardVector(), nullptr);
+				Player->TakeDamage(Damage, DamageEvent, GetController(), this);
+			}
+		}
+
 		FTimerHandle ResetAttackDelayHandle;
 		GetWorld()->GetTimerManager().SetTimer(ResetAttackDelayHandle, this, &AMonsterCharacter::ResetCanAttack, 2.0f, false);
 	}
@@ -68,7 +93,7 @@ void AMonsterCharacter::ApplyDamage(float Value)
 	{
 		DetachFromControllerPendingDestroy();
 		FTimerHandle DestroyDelayHandle;
-		GetWorld()->GetTimerManager().SetTimer(DestroyDelayHandle, this, &AMonsterCharacter::HandleDestroy, 3.0f, false);
+		GetWorld()->GetTimerManager().SetTimer(DestroyDelayHandle, this, &AMonsterCharacter::HandleDestroy, DestroyDelayDuration, false);
 	}
 }
 

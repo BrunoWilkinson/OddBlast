@@ -69,15 +69,22 @@ public:
 	bool CanAttack() const;
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	float Damage = 20.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	float MinWalkSpeed = 50.f;
+
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	float DestroyDelayDuration = 5.f;
 
 	float DefaultSpeed;
 
-	bool IsAttacking;
+	bool IsAttacking = false;
 
 	void HandleDestroy();
+
+	FHitResult HitResult;
+
+	bool HasHit;
 };
