@@ -60,7 +60,10 @@ public:
 	void ResetWalkSpeed();
 
 	UFUNCTION(BlueprintPure)
-	UHealthComponent* GetHealthComponent() const { return HealthComponent; };
+	USkeletalMeshComponent* GetMeshComponent() const { return MeshComponent; }
+
+	UFUNCTION(BlueprintPure)
+	UHealthComponent* GetHealthComponent() const { return HealthComponent; }
 
 	UFUNCTION(BlueprintPure)
 	bool CanAttack() const;

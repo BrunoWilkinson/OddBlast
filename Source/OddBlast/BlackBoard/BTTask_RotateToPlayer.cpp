@@ -32,15 +32,15 @@ EBTNodeResult::Type UBTTask_RotateToPlayer::ExecuteTask(UBehaviorTreeComponent& 
 		return EBTNodeResult::Failed;
 	}
 
-	FRotator CurrentRotation = Monster->GetActorRotation();
-	FRotator PlayerRotation = Player->GetActorRotation();
-	FRotator TargetRotation = CurrentRotation + PlayerRotation;
-	float Speed = PlayerRotation.Euler().Length() / RotationDelay;
+	FVector ToTarget = Player->GetActorLocation() - Monster->GetActorLocation();
+	FRotator LookAtRotation = FRotator(0.f, ToTarget.Rotation().Yaw, 0.f);
+
+	float Speed = Player->GetActorRotation().Euler().Length() / RotationDelay;
 	float DeltaTime = UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
 
-	FRotator NewRotation = FMath::RInterpConstantTo(CurrentRotation, TargetRotation, DeltaTime, Speed);
+	FRotator NewRotation = FMath::RInterpConstantTo(Monster->GetActorRotation(), LookAtRotation, DeltaTime, Speed);
 
-	Monster->SetActorRotation(NewRotation);
+	Monster->GetMeshComponent()->SetWorldRotation(NewRotation);
 
 	return EBTNodeResult::Succeeded;
 }
