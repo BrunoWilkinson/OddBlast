@@ -86,7 +86,9 @@ void AMonsterCharacter::ApplyDamage(float Value)
 	HealthComponent->ApplyDamage(Value);
 	if (HealthComponent->IsDead())
 	{
-		Destroy();
+		DetachFromControllerPendingDestroy();
+		FTimerHandle DestroyDelayHandle;
+		GetWorld()->GetTimerManager().SetTimer(DestroyDelayHandle, this, &AMonsterCharacter::HandleDestroy, 3.0f, false);
 	}
 }
 
@@ -141,4 +143,9 @@ void AMonsterCharacter::ResetWalkSpeed()
 bool AMonsterCharacter::CanAttack() const
 {
 	return false;
+}
+
+void AMonsterCharacter::HandleDestroy()
+{
+	Destroy();
 }

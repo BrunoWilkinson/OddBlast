@@ -84,4 +84,6 @@ private:
 	float DefaultSpeed;
 
 	bool IsAttacking;
+
+	void HandleDestroy();
 };
