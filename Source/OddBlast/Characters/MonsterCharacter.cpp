@@ -46,33 +46,13 @@ void AMonsterCharacter::Tick(float DeltaTime)
 
 void AMonsterCharacter::Attack()
 {
-	FHitResult HitResult;
-	FVector Start = GetActorLocation();
-	FVector End = Start + GetActorForwardVector() * MeleeRange;
-
-	FCollisionShape Sphere = FCollisionShape::MakeSphere(MeleeRadius);
-
-	bool HasHit = GetWorld()->SweepSingleByChannel(
-		HitResult,
-		Start,
-		End,
-		FQuat::Identity,
-		ECC_GameTraceChannel2,
-		Sphere
-	);
-
-	if (HasHit && HitResult.GetActor() != nullptr)
+	if (!IsAttacking) 
 	{
-		APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(HitResult.GetActor());
-		if (PlayerCharacter != nullptr)
-		{
-			FPointDamageEvent DamageEvent(Damage, HitResult, GetActorForwardVector(), nullptr);
-			PlayerCharacter->TakeDamage(Damage, DamageEvent, GetController(), this);
-
-			IsAttacking = true;
-			FTimerHandle ResetAttackDelayHandle;
-			GetWorld()->GetTimerManager().SetTimer(ResetAttackDelayHandle, this, &AMonsterCharacter::ResetCanAttack, 2.0f, false);
-		}
+		// FPointDamageEvent DamageEvent(Damage, HitResult, GetActorForwardVector(), nullptr);
+		// PlayerCharacter->TakeDamage(Damage, DamageEvent, GetController(), this);
+		IsAttacking = true;
+		FTimerHandle ResetAttackDelayHandle;
+		GetWorld()->GetTimerManager().SetTimer(ResetAttackDelayHandle, this, &AMonsterCharacter::ResetCanAttack, 2.0f, false);
 	}
 }
 
@@ -142,7 +122,7 @@ void AMonsterCharacter::ResetWalkSpeed()
 
 bool AMonsterCharacter::CanAttack() const
 {
-	return false;
+	return IsAttacking;
 }
 
 void AMonsterCharacter::HandleDestroy()

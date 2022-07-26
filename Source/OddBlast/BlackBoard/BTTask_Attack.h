@@ -20,4 +20,10 @@ public:
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
+private:
+	UPROPERTY(EditAnywhere)
+	float MeleeRange = 200.f;
+
+	UPROPERTY(EditAnywhere)
+	float MeleeRadius = 50.f;
 };

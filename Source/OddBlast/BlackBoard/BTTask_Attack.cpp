@@ -4,6 +4,7 @@
 #include "BTTask_Attack.h"
 #include "AIController.h"
 #include "../Characters/MonsterCharacter.h"
+#include "../Characters/PlayerCharacter.h"
 
 UBTTask_Attack::UBTTask_Attack()
 {
@@ -25,7 +26,29 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		return EBTNodeResult::Failed;
 	}
 
-	Monster->Attack();
+	FHitResult HitResult;
+	FVector Start = Monster->GetActorLocation();
+	FVector End = Start + Monster->GetActorForwardVector() * MeleeRange;
+
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(MeleeRadius);
+
+	bool HasHit = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		Start,
+		End,
+		FQuat::Identity,
+		ECC_GameTraceChannel2,
+		Sphere
+	);
+
+	if (HasHit && HitResult.GetActor() != nullptr)
+	{
+		APlayerCharacter* Player = Cast<APlayerCharacter>(HitResult.GetActor());
+		if (Player != nullptr)
+		{
+			Monster->Attack();
+		}
+	}
 
 	return EBTNodeResult::Succeeded;
 }

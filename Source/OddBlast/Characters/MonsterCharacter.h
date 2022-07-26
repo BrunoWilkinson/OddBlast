@@ -73,12 +73,6 @@ private:
 	float Damage = 20.f;
 
 	UPROPERTY(EditAnywhere)
-	float MeleeRange = 200.f;
-
-	UPROPERTY(EditAnywhere)
-	float MeleeRadius = 50.f;
-
-	UPROPERTY(EditAnywhere)
 	float MinWalkSpeed = 50.f;
 
 	float DefaultSpeed;
