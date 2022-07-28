@@ -49,12 +49,7 @@ void AMonsterCharacter::Tick(float DeltaTime)
 
 	if (IsAttacking)
 	{
-		FVector Start = MeshComponent->GetSocketLocation(TEXT("RightPaw"));
-		FVector End = MeshComponent->GetSocketLocation(TEXT("RightFinger"));
-
-		DrawDebugLine(GetWorld(), Start, End, FColor::Red, true, -1.0f, 0, 10);
-
-		HasHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_GameTraceChannel2);
+		AttackTraceLine();
 	}
 }
 
@@ -63,19 +58,6 @@ void AMonsterCharacter::Attack()
 	if (!IsAttacking) 
 	{
 		IsAttacking = true;
-		UE_LOG(LogTemp, Warning, TEXT("The boolean value is %s"), (HasHit ? TEXT("true") : TEXT("false")));
-		if (HasHit)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Something Hit"));
-			APlayerCharacter* Player = Cast<APlayerCharacter>(HitResult.GetActor());
-			if (Player != nullptr)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Player Hit"));
-				FPointDamageEvent DamageEvent(Damage, HitResult, GetActorForwardVector(), nullptr);
-				Player->TakeDamage(Damage, DamageEvent, GetController(), this);
-			}
-		}
-
 		FTimerHandle ResetAttackDelayHandle;
 		GetWorld()->GetTimerManager().SetTimer(ResetAttackDelayHandle, this, &AMonsterCharacter::ResetCanAttack, 2.0f, false);
 	}
@@ -153,4 +135,25 @@ bool AMonsterCharacter::CanAttack() const
 void AMonsterCharacter::HandleDestroy()
 {
 	Destroy();
+}
+
+void AMonsterCharacter::AttackTraceLine()
+{
+	FVector Start = MeshComponent->GetSocketLocation(TEXT("RightPaw"));
+	FVector End = MeshComponent->GetSocketLocation(TEXT("RightFinger"));
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, true, -1.0f, 0, 10);
+
+	FHitResult HitResult;
+	bool HasHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_GameTraceChannel2);
+
+	if (HasHit)
+	{
+		APlayerCharacter* Player = Cast<APlayerCharacter>(HitResult.GetActor());
+		if (Player != nullptr)
+		{
+			FPointDamageEvent DamageEvent(Damage, HitResult, GetActorForwardVector(), nullptr);
+			Player->TakeDamage(Damage, DamageEvent, GetController(), this);
+		}
+	}
 }

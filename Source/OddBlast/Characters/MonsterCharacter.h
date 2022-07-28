@@ -84,7 +84,5 @@ private:
 
 	void HandleDestroy();
 
-	FHitResult HitResult;
-
-	bool HasHit;
+	void AttackTraceLine();
 };
