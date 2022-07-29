@@ -4,7 +4,6 @@
 #include "../Characters/PlayerCharacter.h"
 #include "../Components/HealthComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/ArrowComponent.h"
@@ -141,8 +140,6 @@ void AMonsterCharacter::AttackTraceLine()
 {
 	FVector Start = MeshComponent->GetSocketLocation(TEXT("RightPaw"));
 	FVector End = MeshComponent->GetSocketLocation(TEXT("RightFinger"));
-
-	DrawDebugLine(GetWorld(), Start, End, FColor::Red, true, -1.0f, 0, 10);
 
 	FHitResult HitResult;
 	bool HasHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_GameTraceChannel2);
